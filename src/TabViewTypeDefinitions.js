@@ -26,13 +26,14 @@ export type SceneRendererProps<T> = {
     measured: boolean,
   },
   navigationState: NavigationState<T>,
-  position: Animated.Value,
+  position: any,
   jumpToIndex: (index: number) => void,
   getLastPosition: () => number,
   subscribe: (
     event: SubscriptionName,
     callback: Function
   ) => { remove: Function },
+  useNativeDriver: boolean,
 };
 
 export type SubscriptionName = 'reset' | 'position';

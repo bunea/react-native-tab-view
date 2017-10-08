@@ -2,7 +2,7 @@
 
 import React, { PureComponent, Children } from 'react';
 import PropTypes from 'prop-types';
-import { Platform, View, ScrollView, StyleSheet } from 'react-native';
+import { Animated, Platform, View, StyleSheet } from 'react-native';
 import { SceneRendererPropType } from './TabViewPropTypes';
 import type { SceneRendererProps, Route } from './TabViewTypeDefinitions';
 
@@ -20,6 +20,8 @@ type State = {
 };
 
 type Props<T> = SceneRendererProps<T> & {
+  panX: Animated.Value,
+  offsetX: Animated.Value,
   animationEnabled?: boolean,
   swipeEnabled?: boolean,
   children?: React.Element<any>,
@@ -32,6 +34,8 @@ export default class TabViewPagerScroll<T: Route<*>> extends PureComponent<
 > {
   static propTypes = {
     ...SceneRendererPropType,
+    panX: PropTypes.instanceOf(Animated.Value).isRequired,
+    offsetX: PropTypes.instanceOf(Animated.Value).isRequired,
     animationEnabled: PropTypes.bool,
     swipeEnabled: PropTypes.bool,
     children: PropTypes.node,
@@ -105,17 +109,17 @@ export default class TabViewPagerScroll<T: Route<*>> extends PureComponent<
   _handleScroll = (e: ScrollEvent) => {
     this._isIdle =
       Math.abs(e.nativeEvent.contentOffset.x - this._nextOffset) < 0.1;
-    this.props.position.setValue(
-      e.nativeEvent.contentOffset.x / this.props.layout.width
+    this.props.panX.setValue(
+      -e.nativeEvent.contentOffset.x + this.props.layout.width
     );
   };
 
-  _setRef = (el: Object) => (this._scrollView = el);
+  _setRef = (el: Object) => (this._scrollView = el._component);
 
   render() {
     const { children, layout, navigationState } = this.props;
     return (
-      <ScrollView
+      <Animated.ScrollView
         horizontal
         pagingEnabled
         directionalLockEnabled
@@ -148,7 +152,7 @@ export default class TabViewPagerScroll<T: Route<*>> extends PureComponent<
             {i === navigationState.index || layout.width ? child : null}
           </View>
         ))}
-      </ScrollView>
+      </Animated.ScrollView>
     );
   }
 }

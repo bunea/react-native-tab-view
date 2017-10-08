@@ -2,7 +2,13 @@
 
 import React, { PureComponent, Children } from 'react';
 import PropTypes from 'prop-types';
-import { View, ViewPagerAndroid, StyleSheet, I18nManager } from 'react-native';
+import {
+  Animated,
+  View,
+  ViewPagerAndroid,
+  StyleSheet,
+  I18nManager,
+} from 'react-native';
 import { SceneRendererPropType } from './TabViewPropTypes';
 import type { SceneRendererProps, Route } from './TabViewTypeDefinitions';
 
@@ -16,6 +22,8 @@ type PageScrollEvent = {
 type PageScrollState = 'dragging' | 'settling' | 'idle';
 
 type Props<T> = SceneRendererProps<T> & {
+  panX: Animated.Value,
+  offsetX: Animated.Value,
   animationEnabled?: boolean,
   swipeEnabled?: boolean,
   children?: React.Element<any>,
@@ -28,6 +36,8 @@ export default class TabViewPagerAndroid<T: Route<*>> extends PureComponent<
 > {
   static propTypes = {
     ...SceneRendererPropType,
+    panX: PropTypes.instanceOf(Animated.Value).isRequired,
+    offsetX: PropTypes.instanceOf(Animated.Value).isRequired,
     animationEnabled: PropTypes.bool,
     swipeEnabled: PropTypes.bool,
     children: PropTypes.node,
@@ -113,9 +123,15 @@ export default class TabViewPagerAndroid<T: Route<*>> extends PureComponent<
   };
 
   _handlePageScroll = (e: PageScrollEvent) => {
-    this.props.position.setValue(
-      this._getPageIndex(e.nativeEvent.position) +
-        e.nativeEvent.offset * (I18nManager.isRTL ? -1 : 1)
+    this.props.offsetX.setValue(
+      e.nativeEvent.position *
+        this.props.layout.width *
+        (I18nManager.isRTL ? 1 : -1)
+    );
+    this.props.panX.setValue(
+      e.nativeEvent.offset *
+        this.props.layout.width *
+        (I18nManager.isRTL ? 1 : -1)
     );
   };
 

@@ -1,7 +1,6 @@
 /* @flow */
 
 import PropTypes from 'prop-types';
-import { Animated } from 'react-native';
 
 export const NavigationRoutePropType = PropTypes.shape({
   title: PropTypes.string,
@@ -20,7 +19,7 @@ export const SceneRendererPropType = {
     width: PropTypes.number.isRequired,
   }).isRequired,
   navigationState: NavigationStatePropType.isRequired,
-  position: PropTypes.instanceOf(Animated.Value).isRequired,
+  position: PropTypes.object.isRequired,
   jumpToIndex: PropTypes.func.isRequired,
   getLastPosition: PropTypes.func.isRequired,
   subscribe: PropTypes.func.isRequired,

@@ -67,8 +67,8 @@ const DEAD_ZONE = 12;
 
 const DefaultTransitionSpec = {
   timing: Animated.spring,
-  tension: 300,
-  friction: 35,
+  tension: 15,
+  friction: 5,
 };
 
 export default class TabViewPagerPan<T: Route<*>> extends PureComponent<

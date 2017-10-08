@@ -256,6 +256,7 @@ export default class TabBar<T: Route<*>> extends PureComponent<
     Animated.timing(this.state.offset, {
       toValue: 0,
       duration: 150,
+      useNativeDriver: this.props.useNativeDriver,
     }).start();
   };
 
@@ -287,6 +288,7 @@ export default class TabBar<T: Route<*>> extends PureComponent<
         toValue: -scrollOffset,
         tension: 300,
         friction: 35,
+        useNativeDriver: this.props.useNativeDriver,
       }).start();
     } else {
       this.state.offset.setValue(-scrollOffset);

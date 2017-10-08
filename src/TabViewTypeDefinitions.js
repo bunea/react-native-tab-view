@@ -1,8 +1,7 @@
 /* @flow */
 
-import type { StyleObj } from 'react-native/Libraries/StyleSheet/StyleSheetTypes';
-
 import { Animated } from 'react-native';
+import type { StyleObj } from 'react-native/Libraries/StyleSheet/StyleSheetTypes';
 
 export type Route<T: { key: string, testID?: string }> = T;
 

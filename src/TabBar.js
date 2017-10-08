@@ -21,7 +21,7 @@ import type {
 } from './TabViewTypeDefinitions';
 
 type IndicatorProps<T> = SceneRendererProps<T> & {
-  width: Animated.Value,
+  width: number,
 };
 
 type ScrollEvent = {
@@ -162,9 +162,7 @@ export default class TabBar<T: Route<*>> extends PureComponent<
       return null;
     }
     return (
-      <Text style={[styles.tabLabel, this.props.labelStyle]}>
-        {label}
-      </Text>
+      <Text style={[styles.tabLabel, this.props.labelStyle]}>{label}</Text>
     );
   };
 
@@ -368,7 +366,7 @@ export default class TabBar<T: Route<*>> extends PureComponent<
         >
           {this._renderIndicator({
             ...this.props,
-            width: new Animated.Value(finalTabWidth),
+            width: finalTabWidth,
           })}
         </Animated.View>
         <View style={styles.scroll}>
@@ -484,16 +482,16 @@ export default class TabBar<T: Route<*>> extends PureComponent<
                       {icon}
                       {label}
                     </Animated.View>
-                    {badge
-                      ? <Animated.View
-                          style={[
-                            styles.badge,
-                            { opacity: this.state.visibility },
-                          ]}
-                        >
-                          {badge}
-                        </Animated.View>
-                      : null}
+                    {badge ? (
+                      <Animated.View
+                        style={[
+                          styles.badge,
+                          { opacity: this.state.visibility },
+                        ]}
+                      >
+                        {badge}
+                      </Animated.View>
+                    ) : null}
                   </View>
                 </TouchableItem>
               );
